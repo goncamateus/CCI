@@ -2,7 +2,6 @@
 #include <string.h>
 #include <vector>
 
-
 // exercise 1.1
 bool is_unique(std::string str)
 {
@@ -53,23 +52,45 @@ bool permutation(std::string str1, std::string str2)
     {
         int v = (*i);
         char_set[v]--;
-        if(char_set[v] <  0)
+        if (char_set[v] < 0)
             return false;
     }
     return true;
 }
 
 // exercise 1.3
-std::string URLify(char* str, int len)
+std::string URLify(std::string str, int len)
 {
-    int spacecount =0, i =0, index;
-    
-
+    int spacecount = 0, i = 0, index;
+    for (; i < len; i++)
+    {
+        if (str[i] == ' ')
+            spacecount++;
+    }
+    index = len + spacecount * 2;
+    if (len < str.length())
+        str[len] = '\0';
+    for (i = len; i >= 0; i--)
+    {
+        if (str[i] == ' ')
+        {
+            str[index - 1] = '0';
+            str[index - 2] = '2';
+            str[index - 3] = '%';
+            index = index - 3;
+        }
+        else
+        {
+            str[index - i] = str[i];
+            index--;
+        }
+    }
+    return str;
 }
 
 int main()
 {
-    std::string str1 = "abba", str2 = "abba";
-    std::cout << permutation(str1,str2) << std::endl;
+    std::string str1 = "ab ba", str2 = "abba";
+    std::cout << URLify(str1, 5) << std::endl;
     return 0;
 }
